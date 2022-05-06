@@ -3,7 +3,7 @@ from django.shortcuts import render
 # Create your views here.
 from rest_framework import generics
 from .serializers import UserSerializer, CommunitySerializer, DiscussionSerializer, CommentSerializer, GriefStageSerializer, GriefImageSerializer
-from .models import User, Community, Discussion, Comments, GriefImage, GriefStage
+from .models import User, Community, Discussion, Comment, GriefImage, GriefStage
 
 
 class UserList(generics.ListCreateAPIView):
@@ -37,12 +37,12 @@ class DiscussionDetail(generics.RetrieveUpdateDestroyAPIView):
 
 
 class CommentList(generics.ListCreateAPIView):
-    queryset = Comments.objects.all()
+    queryset = Comment.objects.all()
     serializer_class = CommentSerializer
 
 
 class CommentDetail(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Comments.objects.all()
+    queryset = Comment.objects.all()
     serializer_class = CommentSerializer
 
 

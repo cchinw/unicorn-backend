@@ -1,3 +1,4 @@
+from email import message
 from django.db import models
 
 
@@ -28,7 +29,7 @@ class GriefStage(models.Model):
 
 class GriefImage(models.Model):
     stage = models.ForeignKey(
-        GriefStage, on_delete=models.CASCADE, related_name='grief_stage')
+        GriefStage, on_delete=models.CASCADE, related_name='stage')
     image = models.TextField()
 
     def __str__(self):
@@ -39,10 +40,12 @@ class Community(models.Model):
     category = models.CharField(max_length=500)
     image = models.TextField()
     description = models.TextField()
-    griefstage = models.ForeignKey(
-        GriefStage, on_delete=models.CASCADE, related_name='griefstage')
     user = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name='users')
+    creator = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name='creator', default=True)
+    grief_stage = models.ForeignKey(
+        GriefStage, on_delete=models.CASCADE, related_name='community_grief_stage')
     image = models.TextField(
         null=True, default='https://www.komar.de/en/media/catalog/product/cache/5/image/9df78eab33525d08d6e5fb8d27136e95/S/H/SHX8-133_1568286487.jpg')
 
@@ -55,8 +58,10 @@ class Discussion(models.Model):
     content = models.TextField()
     upvotes = models.PositiveIntegerField()
     comments = models.TextField()
-    creator = models.ForeignKey(
+    user = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name='user')
+    creator = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name='discussion_creator')
     community = models.ForeignKey(
         Community, on_delete=models.CASCADE, related_name='community')
 
@@ -64,7 +69,7 @@ class Discussion(models.Model):
         return self.topic
 
 
-class Comments(models.Model):
+class Comment(models.Model):
     comment = models.TextField()
     upvotes = models.PositiveIntegerField()
     discussion = models.ForeignKey(
@@ -74,3 +79,17 @@ class Comments(models.Model):
 
     def __str__(self):
         return self.topic
+
+
+class DirectMessage(models.Model):
+    sent_to = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name='sent_to')
+    sent_from = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name='sent_from')
+    message = models.TextField()
+
+
+class Resources(models.Model):
+    grief_stage = models.ForeignKey(
+        GriefStage, on_delete=models.CASCADE, related_name='grief_stage')
+    resource = models.TextField()
