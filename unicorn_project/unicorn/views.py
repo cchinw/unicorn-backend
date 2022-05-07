@@ -6,22 +6,37 @@ from .serializers import UserSerializer, UserProfileSerializer, GriefStageSerial
 from .models import UnicornUser, Community, Comment, Discussion, GriefStage, DirectMessage, Resources, UserProfile
 
 
-class UserList(generics.ListCreateAPIView):
-    queryset = UnicornUser.objects.all()
-    serializer_class = UserSerializer
+# class UserList(generics.ListCreateAPIView):
+#     queryset = UnicornUser.objects.all()
+#     serializer_class = UserSerializer
 
 
-class UserDetail(generics.RetrieveUpdateDestroyAPIView):
-    queryset = UnicornUser.objects.all()
-    serializer_class = UserSerializer
+# class UserDetail(generics.RetrieveUpdateDestroyAPIView):
+#     queryset = UnicornUser.objects.all()
+#     serializer_class = UserSerializer
 
 
-class CommunityList(generics.ListCreateAPIView):
+class CommunityCreate(generics.CreateAPIView):
     queryset = Community.objects.all()
     serializer_class = CommunitySerializer
 
 
-class CommunityDetail(generics.RetrieveUpdateDestroyAPIView):
+class CommunityUpdate(generics.RetrieveUpdateAPIView):
+    queryset = Community.objects.all()
+    serializer_class = CommunitySerializer
+
+
+class CommunityList(generics.ListAPIView):
+    queryset = Community.objects.all()
+    serializer_class = CommunitySerializer
+
+
+class CommunityDetail(generics.RetrieveAPIView):
+    queryset = Community.objects.all()
+    serializer_class = CommunitySerializer
+
+
+class CommunityDelete(generics.DestroyAPIView):
     queryset = Community.objects.all()
     serializer_class = CommunitySerializer
 
