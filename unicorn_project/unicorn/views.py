@@ -2,17 +2,17 @@ from django.shortcuts import render
 
 # Create your views here.
 from rest_framework import generics
-from .serializers import UserSerializer, CommunitySerializer, DiscussionSerializer, CommentSerializer, GriefStageSerializer, GriefImageSerializer
-from .models import User, Community, Discussion, Comment, GriefImage, GriefStage
+from .serializers import UserSerializer, UserProfileSerializer, GriefStageSerializer, CommunitySerializer, DiscussionSerializer, CommentSerializer, DirectMessageSerializer, ResourceSerializer
+from .models import UnicornUser, Community, Comment, Discussion, GriefStage, DirectMessage, Resources, UserProfile
 
 
 class UserList(generics.ListCreateAPIView):
-    queryset = User.objects.all()
+    queryset = UnicornUser.objects.all()
     serializer_class = UserSerializer
 
 
 class UserDetail(generics.RetrieveUpdateDestroyAPIView):
-    queryset = User.objects.all()
+    queryset = UnicornUser.objects.all()
     serializer_class = UserSerializer
 
 
@@ -54,13 +54,3 @@ class GriefStageList(generics.ListCreateAPIView):
 class GriefStageDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = GriefStage.objects.all()
     serializer_class = GriefStageSerializer
-
-
-class GriefImageList(generics.ListCreateAPIView):
-    queryset = GriefImage.objects.all()
-    serializer_class = GriefImageSerializer
-
-
-class GriefImageDetail(generics.RetrieveUpdateDestroyAPIView):
-    queryset = GriefImage.objects.all()
-    serializer_class = GriefImageSerializer

@@ -1,50 +1,51 @@
 from pyexpat import model
 from rest_framework import serializers
-from .models import User, Community, Comment, Discussion, GriefStage, GriefImage
+from .models import UnicornUser, Community, Comment, Discussion, GriefStage, DirectMessage, Resources, UserProfile
 
 
-class UserSerializer(serializers.HyperlinkedModelSerializer):
-    communities = serializers.HyperlinkedRelatedField(
-        view_name='community_detail',
-        many=True,
-        read_only=True
-    )
-
-    username = serializers.ModelSerializer.serializer_url_field(
-        view_name='user_detail'
-    )
-
+class UserSerializer(serializers.ModelSerializer):
     class Meta:
-        model = User
-        fields = ('id', 'username', 'email',
-                  'password', 'bio', 'image',)
+        model = UnicornUser
+        fields = '__all__'
 
 
-class CommunitySerializer(serializers.HyperlinkedModelSerializer):
-    artist = serializers.HyperlinkedRelatedField(
-        view_name='user_detail',
-        read_only=True
-    )
-    user_id = serializers.PrimaryKeyRelatedField(
-        queryset=User.objects.all(),
-        source='artist'
-    )
+class GriefStageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = GriefStage
+        fields = '__all__'
 
+
+class UserProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserProfile
+        fields = '__all__'
+
+
+class CommunitySerializer(serializers.ModelSerializer):
     class Meta:
         model = Community
-        fields = ('id', 'user', 'user_id', 'category', 'image', 'grief_stage',)
+        fields = '__all__'
 
 
-class DiscussionSerializer(serializers.HyperlinkedModelSerializer):
-    artist = serializers.HyperlinkedRelatedField(
-        view_name='user_detail',
-        read_only=True
-    )
-    user_id = serializers.PrimaryKeyRelatedField(
-        queryset=User.objects.all(),
-        source='artist'
-    )
-
+class DiscussionSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Community
-        fields = ('id', 'user', 'user_id', 'category', 'image', 'grief_stage',)
+        model = Discussion
+        fields = '__all__'
+
+
+class CommentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Comment
+        fields = '__all__'
+
+
+class DirectMessageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = DirectMessage
+        fields = '__all__'
+
+
+class ResourceSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Resources
+        fields = '__all__'

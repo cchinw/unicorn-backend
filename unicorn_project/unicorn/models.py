@@ -1,16 +1,17 @@
 from email import message
+from operator import truediv
+import resource
+from tokenize import blank_re
 from django.db import models
-
+from django.contrib.auth.models import AbstractUser
+from django.conf import settings
 
 # Create your models here.
 
 
-class User(models.Model):
+class UnicornUser(AbstractUser):
     username = models.CharField(max_length=30, unique=True)
     email = models.EmailField(unique=True)
-    password = models.CharField(max_length=50)
-    bio = models.TextField()
-    image = models.ImageField(null=True)
 
     def __str__(self):
         return self.username
@@ -19,30 +20,38 @@ class User(models.Model):
 class GriefStage(models.Model):
     title = models.CharField(max_length=500)
     description = models.TextField()
-    image = models.ImageField()
-    help = models.TextField()
+    image = models.ImageField(
+        upload_to='uploads/images/grief', blank=True, null=True)
 
     def __str__(self):
         return self.title
 
 
-class GriefImage(models.Model):
-    stage = models.ForeignKey(
-        GriefStage, on_delete=models.CASCADE, related_name='stage')
-    image = models.ImageField()
+class UserProfile(models.Model):
+    user = models.OneToOneField(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, primary_key=True)
+    bio = models.TextField()
+    avatar = models.ImageField(
+        upload_to='uploads/avatar', blank=True, null=True)
+    grief_stage = models.ForeignKey(
+        GriefStage, on_delete=models.CASCADE, related_name='user_grief_stage', blank=True)
 
-    def __str__(self):
-        return self.image
+
+class Resources(models.Model):
+    grief_stage = models.ForeignKey(
+        GriefStage, on_delete=models.CASCADE, related_name='resource_grief_stage')
+    resource = models.TextField()
 
 
 class Community(models.Model):
     category = models.CharField(max_length=500)
-    image = models.TextField()
+    image = models.ImageField()
     description = models.TextField()
-    user = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name='users')
+    population = models.IntegerField()
+    members = models.ManyToManyField(
+        settings.AUTH_USER_MODEL, related_name='members')
     creator = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name='creator', default=True)
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='creator', default=True)
     grief_stage = models.ForeignKey(
         GriefStage, on_delete=models.CASCADE, related_name='community_grief_stage')
     image = models.ImageField(null=True,)
@@ -57,9 +66,9 @@ class Discussion(models.Model):
     upvotes = models.PositiveIntegerField()
     comments = models.TextField()
     user = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name='user')
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='user')
     creator = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name='discussion_creator')
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='discussion_creator')
     community = models.ForeignKey(
         Community, on_delete=models.CASCADE, related_name='community')
 
@@ -73,7 +82,7 @@ class Comment(models.Model):
     discussion = models.ForeignKey(
         Discussion, on_delete=models.CASCADE, related_name='discussion')
     commenter = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name='commenter')
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='commenter')
 
     def __str__(self):
         return self.topic
@@ -81,20 +90,7 @@ class Comment(models.Model):
 
 class DirectMessage(models.Model):
     sent_to = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name='sent_to')
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='sent_to')
     sent_from = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name='sent_from')
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='sent_from')
     message = models.TextField()
-
-
-class Resources(models.Model):
-    grief_stage = models.ForeignKey(
-        GriefStage, on_delete=models.CASCADE, related_name='grief_stage')
-    resource = models.TextField()
-
-
-class UpvoteComment(models.Model):
-    user_id = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name='user_id')
-    comment_id = models.ForeignKey(
-        Comment, on_delete=models.CASCADE, related_name='comment_id')
