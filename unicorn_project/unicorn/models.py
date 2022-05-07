@@ -10,8 +10,7 @@ class User(models.Model):
     email = models.EmailField(unique=True)
     password = models.CharField(max_length=50)
     bio = models.TextField()
-    image = models.TextField(
-        default='https://img.freepik.com/free-vector/silhouette-unicorn-hologram-gradient-background_1048-12923.jpg?w=2000', null=True)
+    image = models.ImageField(null=True)
 
     def __str__(self):
         return self.username
@@ -20,7 +19,7 @@ class User(models.Model):
 class GriefStage(models.Model):
     title = models.CharField(max_length=500)
     description = models.TextField()
-    image = models.TextField()
+    image = models.ImageField()
     help = models.TextField()
 
     def __str__(self):
@@ -30,7 +29,7 @@ class GriefStage(models.Model):
 class GriefImage(models.Model):
     stage = models.ForeignKey(
         GriefStage, on_delete=models.CASCADE, related_name='stage')
-    image = models.TextField()
+    image = models.ImageField()
 
     def __str__(self):
         return self.image
@@ -46,8 +45,7 @@ class Community(models.Model):
         User, on_delete=models.CASCADE, related_name='creator', default=True)
     grief_stage = models.ForeignKey(
         GriefStage, on_delete=models.CASCADE, related_name='community_grief_stage')
-    image = models.TextField(
-        null=True, default='https://www.komar.de/en/media/catalog/product/cache/5/image/9df78eab33525d08d6e5fb8d27136e95/S/H/SHX8-133_1568286487.jpg')
+    image = models.ImageField(null=True,)
 
     def __str__(self):
         return self.category
@@ -93,3 +91,10 @@ class Resources(models.Model):
     grief_stage = models.ForeignKey(
         GriefStage, on_delete=models.CASCADE, related_name='grief_stage')
     resource = models.TextField()
+
+
+class UpvoteComment(models.Model):
+    user_id = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name='user_id')
+    comment_id = models.ForeignKey(
+        Comment, on_delete=models.CASCADE, related_name='comment_id')
