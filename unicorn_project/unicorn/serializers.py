@@ -1,6 +1,8 @@
 from pyexpat import model
 from rest_framework import serializers
+from rest_auth.serializers import LoginSerializer
 from .models import UnicornUser, Community, Comment, Discussion, GriefStage, DirectMessage, Resources, UserProfile
+from django.utils.translation import gettext as _
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -49,3 +51,33 @@ class ResourceSerializer(serializers.ModelSerializer):
     class Meta:
         model = Resources
         fields = '__all__'
+
+
+class UnicornUserDeactivateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UnicornUser
+        fields = ['email']
+
+
+class UnicornUserActivateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UnicornUser
+        fields = ['email']
+
+
+class UnicornLoginSerializer(LoginSerializer):
+    username = None
+
+
+class ChangePasswordSerializer(serializers.Serializer):
+    model = UnicornUser
+
+    """
+    Serializer for password change endpoint.
+    """
+    old_password = serializers.CharField(required=True)
+    new_password = serializers.CharField(required=True)
+
+
+class ResendEmailSerializer(serializers.Serializer):
+    email = serializers.CharField()

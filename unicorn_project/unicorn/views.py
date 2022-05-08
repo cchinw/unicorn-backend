@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse
+from django.utils.translation import gettext as _
 
 # Create your views here.
 from rest_framework import generics
@@ -116,6 +117,11 @@ class CommentDelete(generics.DestroyAPIView):
 
 
 # Resource Views
+class ResourceCreate(generics.CreateAPIView):
+    queryset = Resources.objects.all()
+    serializer_class = ResourceSerializer
+
+
 class ResourceList(generics.ListAPIView):
     queryset = Resources.objects.all()
     serializer_class = ResourceSerializer
