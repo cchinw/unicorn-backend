@@ -19,9 +19,6 @@ def index(request):
     return HttpResponse("Welcome to Unicorn API Page")
 
 # Grief Stage Views
-# class GriefStageCreate(generics.CreateAPIView):
-#     queryset = GriefStage.objects.all()
-#     serializer_class = GriefStageSerializer
 
 
 class GriefStageUpdate(generics.RetrieveUpdateAPIView):
@@ -38,10 +35,6 @@ class GriefStageDetail(generics.RetrieveAPIView):
     queryset = GriefStage.objects.all()
     serializer_class = GriefStageSerializer
 
-
-# class GriefStageDelete(generics.DestroyAPIView):
-#     queryset = GriefStage.objects.all()
-#     serializer_class = GriefStageSerializer
 
 # Community Views
 class CommunityCreate(generics.CreateAPIView):
@@ -123,17 +116,6 @@ class CommentDelete(generics.DestroyAPIView):
 
 
 # Resource Views
-
-# class ResourceCreate(generics.CreateAPIView):
-#     queryset = Resources.objects.all()
-#     serializer_class = ResourceSerializer
-
-
-# class ResourceUpdate(generics.RetrieveUpdateAPIView):
-#     queryset = Resources.objects.all()
-#     serializer_class = ResourceSerializer
-
-
 class ResourceList(generics.ListAPIView):
     queryset = Resources.objects.all()
     serializer_class = ResourceSerializer
@@ -142,11 +124,6 @@ class ResourceList(generics.ListAPIView):
 class ResourceDetail(generics.RetrieveAPIView):
     queryset = Resources.objects.all()
     serializer_class = ResourceSerializer
-
-
-# class ResourceDelete(generics.DestroyAPIView):
-#     queryset = Resources.objects.all()
-#     serializer_class = ResourceSerializer
 
 
 # Direct Message Views
