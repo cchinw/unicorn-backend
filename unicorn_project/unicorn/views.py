@@ -4,7 +4,7 @@ from django.http import HttpResponse
 # Create your views here.
 from rest_framework import generics
 from .serializers import UserSerializer, UserProfileSerializer, GriefStageSerializer, CommunitySerializer, DiscussionSerializer, CommentSerializer, DirectMessageSerializer, ResourceSerializer
-from .models import UnicornUser, Community, Comment, Discussion, GriefStage, DirectMessage, Resources, UserProfile
+from .models import UnicornUser, UserProfile, Community, Comment, Discussion, GriefStage, DirectMessage, Resources
 
 
 # class UserList(generics.ListCreateAPIView):
@@ -18,7 +18,32 @@ from .models import UnicornUser, Community, Comment, Discussion, GriefStage, Dir
 def index(request):
     return HttpResponse("Welcome to Unicorn API Page")
 
+# Grief Stage Views
+# class GriefStageCreate(generics.CreateAPIView):
+#     queryset = GriefStage.objects.all()
+#     serializer_class = GriefStageSerializer
 
+
+class GriefStageUpdate(generics.RetrieveUpdateAPIView):
+    queryset = GriefStage.objects.all()
+    serializer_class = GriefStageSerializer
+
+
+class GriefStageList(generics.ListAPIView):
+    queryset = GriefStage.objects.all()
+    serializer_class = GriefStageSerializer
+
+
+class GriefStageDetail(generics.RetrieveAPIView):
+    queryset = GriefStage.objects.all()
+    serializer_class = GriefStageSerializer
+
+
+# class GriefStageDelete(generics.DestroyAPIView):
+#     queryset = GriefStage.objects.all()
+#     serializer_class = GriefStageSerializer
+
+# Community Views
 class CommunityCreate(generics.CreateAPIView):
     queryset = Community.objects.all()
     serializer_class = CommunitySerializer
@@ -44,31 +69,108 @@ class CommunityDelete(generics.DestroyAPIView):
     serializer_class = CommunitySerializer
 
 
-class DiscussionList(generics.ListCreateAPIView):
+# Discussion Views
+class DiscussionCreate(generics.CreateAPIView):
     queryset = Discussion.objects.all()
     serializer_class = DiscussionSerializer
 
 
-class DiscussionDetail(generics.RetrieveUpdateDestroyAPIView):
+class DiscussionUpdate(generics.RetrieveUpdateAPIView):
     queryset = Discussion.objects.all()
     serializer_class = DiscussionSerializer
 
 
-class CommentList(generics.ListCreateAPIView):
+class DiscussionList(generics.ListAPIView):
+    queryset = Discussion.objects.all()
+    serializer_class = DiscussionSerializer
+
+
+class DiscussionDetail(generics.RetrieveAPIView):
+    queryset = Discussion.objects.all()
+    serializer_class = DiscussionSerializer
+
+
+class DiscussionDelete(generics.DestroyAPIView):
+    queryset = Discussion.objects.all()
+    serializer_class = DiscussionSerializer
+
+
+# Comment Views
+
+class CommentCreate(generics.CreateAPIView):
     queryset = Comment.objects.all()
     serializer_class = CommentSerializer
 
 
-class CommentDetail(generics.RetrieveUpdateDestroyAPIView):
+class CommentUpdate(generics.RetrieveUpdateAPIView):
     queryset = Comment.objects.all()
     serializer_class = CommentSerializer
 
 
-class GriefStageList(generics.ListCreateAPIView):
-    queryset = GriefStage.objects.all()
-    serializer_class = GriefStageSerializer
+class CommentList(generics.ListAPIView):
+    queryset = Comment.objects.all()
+    serializer_class = CommentSerializer
 
 
-class GriefStageDetail(generics.RetrieveUpdateDestroyAPIView):
-    queryset = GriefStage.objects.all()
-    serializer_class = GriefStageSerializer
+class CommentDetail(generics.RetrieveAPIView):
+    queryset = Comment.objects.all()
+    serializer_class = CommentSerializer
+
+
+class CommentDelete(generics.DestroyAPIView):
+    queryset = Comment.objects.all()
+    serializer_class = CommentSerializer
+
+
+# Resource Views
+
+# class ResourceCreate(generics.CreateAPIView):
+#     queryset = Resources.objects.all()
+#     serializer_class = ResourceSerializer
+
+
+# class ResourceUpdate(generics.RetrieveUpdateAPIView):
+#     queryset = Resources.objects.all()
+#     serializer_class = ResourceSerializer
+
+
+class ResourceList(generics.ListAPIView):
+    queryset = Resources.objects.all()
+    serializer_class = ResourceSerializer
+
+
+class ResourceDetail(generics.RetrieveAPIView):
+    queryset = Resources.objects.all()
+    serializer_class = ResourceSerializer
+
+
+# class ResourceDelete(generics.DestroyAPIView):
+#     queryset = Resources.objects.all()
+#     serializer_class = ResourceSerializer
+
+
+# Direct Message Views
+
+class DirectMesageCreate(generics.CreateAPIView):
+    queryset = DirectMessage.objects.all()
+    serializer_class = DirectMessageSerializer
+
+
+class DirectMesageUpdate(generics.RetrieveUpdateAPIView):
+    queryset = DirectMessage.objects.all()
+    serializer_class = DirectMessageSerializer
+
+
+class DirectMesageList(generics.ListAPIView):
+    queryset = DirectMessage.objects.all()
+    serializer_class = DirectMessageSerializer
+
+
+class DirectMesageDetail(generics.RetrieveAPIView):
+    queryset = DirectMessage.objects.all()
+    serializer_class = DirectMessageSerializer
+
+
+class DirectMesageDelete(generics.DestroyAPIView):
+    queryset = DirectMessage.objects.all()
+    serializer_class = DirectMessageSerializer
