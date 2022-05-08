@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.http import HttpResponse
 
 # Create your views here.
 from rest_framework import generics
@@ -14,6 +15,8 @@ from .models import UnicornUser, Community, Comment, Discussion, GriefStage, Dir
 # class UserDetail(generics.RetrieveUpdateDestroyAPIView):
 #     queryset = UnicornUser.objects.all()
 #     serializer_class = UserSerializer
+def index(request):
+    return HttpResponse("Welcome to Unicorn API Page")
 
 
 class CommunityCreate(generics.CreateAPIView):
