@@ -12,6 +12,7 @@ django-rest-passwordreset = "*"
 django-allauth = "*"
 django-cors-headers = "*"
 django = "==3.2"
+drf-yasg = "*"
 
 [dev-packages]
 

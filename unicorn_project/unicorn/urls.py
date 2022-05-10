@@ -14,7 +14,7 @@ urlpatterns = [
     # Community Endpoints
     path('api/create/community', CommunityCreate.as_view(), name='create-community'),
     path('api/list/communities', CommunityList.as_view(), name='list-communities'),
-    path('api/update/communit/<pk>',
+    path('api/update/community/<pk>',
          CommunityUpdate.as_view(), name='update-community'),
     path('api/detail/community/<pk>',
          CommunityDetail.as_view(), name='detail-community'),

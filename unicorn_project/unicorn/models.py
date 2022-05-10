@@ -10,8 +10,14 @@ from django.conf import settings
 
 
 class UnicornUser(AbstractUser):
+    USER_TYPE_CHOICES = (
+        (1, 'UnicornAdmin'),
+        (2, 'Griever'),
+    )
     username = models.CharField(max_length=30, unique=True)
     email = models.EmailField(unique=True)
+    user_type = models.PositiveSmallIntegerField(
+        choices=USER_TYPE_CHOICES, null=True)
 
     def __str__(self):
         return self.username
