@@ -47,6 +47,8 @@ class Resources(models.Model):
     grief_stage = models.ForeignKey(
         GriefStage, on_delete=models.CASCADE, related_name='resource_grief_stage')
     resource = models.TextField()
+    image = models.ImageField(
+        upload_to='uploads/resources', blank=True, null=True)
 
 
 class Community(models.Model):

@@ -29,7 +29,7 @@ from rest_framework.generics import (
 
 
 # Create your views here.
-from .serializers import UserSerializer, UserProfileSerializer, GriefStageSerializer, CommunitySerializer, DiscussionSerializer, CommentSerializer, DirectMessageSerializer, ResourceSerializer, ResendEmailSerializer, ChangePasswordSerializer, UnicornLoginSerializer, UnicornUserActivateSerializer, UnicornUserDeactivateSerializer, UnicornRegisterSerializer
+from .serializers import UserSerializer, UserProfileSerializer, ResendEmailSerializer, ChangePasswordSerializer, UnicornLoginSerializer, UnicornUserActivateSerializer, UnicornUserDeactivateSerializer, UnicornRegisterSerializer, GriefStageSerializer, CommunitySerializer, DiscussionSerializer, CommentSerializer, DirectMessageSerializer, ResourceSerializer
 from .models import UnicornUser, UserProfile, Community, Comment, Discussion, GriefStage, DirectMessage, Resources
 
 
@@ -73,7 +73,7 @@ class ResendEmailConfirmation(APIView):
                 user=user, verified=True).exists()
 
             if emailAddress:
-                return Response({'message': 'This email is already verified'}, status=status.HTTP_400_BAD_REQUEST)
+                return Response({'message': 'This email has already been  verified'}, status=status.HTTP_400_BAD_REQUEST)
             else:
                 send_email_confirmation(request, user=user)
                 return Response({'message': 'Verification email resent'}, status=status.HTTP_201_CREATED)

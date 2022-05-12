@@ -1,8 +1,15 @@
 from django.urls import path
-from .views import CommunityCreate, CommunityList, CommunityUpdate, CommunityDetail, CommunityDelete, GriefStageUpdate, GriefStageList, GriefStageDetail, DiscussionCreate, DiscussionUpdate, DiscussionList, DiscussionDetail, DiscussionDelete, CommentCreate, CommentUpdate, CommentList, CommentDetail, CommentDelete, ResourceList, ResourceDetail, ResourceCreate, DirectMesageCreate, DirectMesageUpdate, DirectMesageList, DirectMesageDetail, DirectMesageDelete
+from .views import ResendEmailConfirmation, VerifyEmailView, UserLoginView, ChangePasswordSerializer, DeactivateUserView, ActivateUserView, UnicornSignUpView, UserList, UserDetail, CommunityCreate, CommunityList, CommunityUpdate, CommunityDetail, CommunityDelete, GriefStageUpdate, GriefStageList, GriefStageDetail, DiscussionCreate, DiscussionUpdate, DiscussionList, DiscussionDetail, DiscussionDelete, CommentCreate, CommentUpdate, CommentList, CommentDetail, CommentDelete, ResourceList, ResourceDetail, ResourceCreate, DirectMesageCreate, DirectMesageUpdate, DirectMesageList, DirectMesageDetail, DirectMesageDelete
 
 
 urlpatterns = [
+    # User Endpoints
+    path('api/register/user', UnicornSignUpView.as_view(),
+         name='register-unicorn-user'),
+    path('api/login/user', UserLoginView.as_view(), name='login-unicorn-user'),
+    path('api/auth/session', UserLoginView.as_view(), name='check-session'),
+
+
     # Grief Stage Endpoints
     path('api/list/grief-stages', GriefStageList.as_view(),
          name='list-grief-stages'),
