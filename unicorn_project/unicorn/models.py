@@ -44,6 +44,8 @@ class UserProfile(models.Model):
 
 
 class Resources(models.Model):
+    resource_title = models.CharField(
+        max_length=500, default='Grief Handling Resource')
     grief_stage = models.ForeignKey(
         GriefStage, on_delete=models.CASCADE, related_name='resource_grief_stage')
     resource = models.TextField()

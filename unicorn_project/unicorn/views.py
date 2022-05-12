@@ -262,7 +262,7 @@ class CommunityUpdate(generics.RetrieveUpdateAPIView):
 
 class CommunityList(generics.ListAPIView):
     queryset = Community.objects.all()
-    serializer_class = CommunitySerializer
+    serializer_class = GriefStageSerializer
 
 
 class CommunityDetail(generics.RetrieveAPIView):
