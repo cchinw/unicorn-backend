@@ -262,7 +262,7 @@ class CommunityUpdate(generics.RetrieveUpdateAPIView):
 
 class CommunityList(generics.ListAPIView):
     queryset = Community.objects.all()
-    serializer_class = GriefStageSerializer
+    serializer_class = CommunitySerializer
 
 
 class CommunityDetail(generics.RetrieveAPIView):
@@ -288,7 +288,16 @@ class DiscussionUpdate(generics.RetrieveUpdateAPIView):
 
 class DiscussionList(generics.ListAPIView):
     queryset = Discussion.objects.all()
+    lookup_field = 'community'
     serializer_class = DiscussionSerializer
+
+    def get_queryset(self, **kwargs):
+        try:
+            community = kwargs['community']
+            discussions = Discussion.objects.filter(community=community)
+            return discussions
+        except Discussion.DoesNotExist():
+            return {}
 
 
 class DiscussionDetail(generics.RetrieveAPIView):

@@ -8,6 +8,7 @@ urlpatterns = [
          name='register-unicorn-user'),
     path('api/login/user', UserLoginView.as_view(), name='login-unicorn-user'),
     path('api/auth/session', UserLoginView.as_view(), name='check-session'),
+    path('api/detail/unicorn-user/<pk>', UserDetail.as_view(), name='view-user'),
 
 
     # Grief Stage Endpoints
@@ -19,8 +20,13 @@ urlpatterns = [
          name='detail-grief-stage'),
 
     # Community Endpoints
+    path('api/list/community/<int:members>',
+         CommunityList.as_view(), name='get-community-members'),
+    path('api/detail/community/<int:creator>',
+         CommunityDetail.as_view(), name='get-community-creator'),
     path('api/create/community', CommunityCreate.as_view(), name='create-community'),
-    path('api/list/communities', CommunityList.as_view(), name='list-communities'),
+    path('api/detail/community/<int:grief_stage>',
+         CommunityDetail.as_view(), name='get-community-by-grief-stage'),
     path('api/update/community/<pk>',
          CommunityUpdate.as_view(), name='update-community'),
     path('api/detail/community/<pk>',
@@ -32,6 +38,10 @@ urlpatterns = [
     path('api/create/discussion', DiscussionCreate.as_view(),
          name='create-discussion'),
     path('api/list/discussions', DiscussionList.as_view(), name='list-discussions'),
+    path('api/list/discussions/<int:community>',
+         DiscussionList.as_view(), name='list-discussions-by-community'),
+    path('api/list/discussions/<int:user>',
+         DiscussionList.as_view(), name='list-discussions-by-users'),
     path('api/update/discussion/<pk>', DiscussionUpdate.as_view(),
          name='update-discussion'),
     path('api/detail/discussion/<pk>', DiscussionDetail.as_view(),
@@ -39,9 +49,11 @@ urlpatterns = [
     path('api/delete/discussion/<pk>', DiscussionDelete.as_view(),
          name='delete-discussion'),
 
-    # Discussion Endpoints
+    # Comments Endpoints
     path('api/create/comment', CommentCreate.as_view(), name='create-comment'),
     path('api/list/comments', CommentList.as_view(), name='list-comments'),
+    path('api/list/comments/<int:discussion>',
+         CommentList.as_view(), name='list-comments-by-discussion'),
     path('api/update/comment/<pk>', CommentUpdate.as_view(), name='update-comment'),
     path('api/detail/comment/<pk>', CommentDetail.as_view(), name='detail-comment'),
     path('api/delete/comment/<pk>', CommentDelete.as_view(), name='delete-comment'),
