@@ -70,6 +70,18 @@ class Community(models.Model):
         return self.category
 
 
+class UserProfile(models.Model):
+    user = models.OneToOneField(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, primary_key=True)
+    bio = models.TextField()
+    avatar = models.ImageField(
+        upload_to='uploads/avatar', blank=True, null=True)
+    grief_stage = models.ForeignKey(
+        GriefStage, on_delete=models.CASCADE, related_name='user_grief_stage', blank=True)
+    community = models.ForeignKey(
+        Community, on_delete=models.CASCADE, related_name='community')
+
+
 class Discussion(models.Model):
     topic = models.TextField(max_length=2000)
     content = models.TextField()
