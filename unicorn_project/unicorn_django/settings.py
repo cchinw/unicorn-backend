@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'rest_framework.authtoken',
     'rest_auth.registration',
     'rest_auth',
     'django_rest_passwordreset',
@@ -123,7 +124,7 @@ EMAIL_HOST_USER = os.environ.get("GMAIL_USER")
 EMAIL_HOST_PASSWORD = os.environ.get("GMAIL_PASS")
 EMAIL_TIMEOUT = 1000
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
-
+# print(EMAIL_HOST, 'EMAIL HOST!!!!!!!!!!!!!!!!!!!!')
 
 TEMPLATES = [
     {

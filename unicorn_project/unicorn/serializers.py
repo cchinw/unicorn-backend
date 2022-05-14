@@ -30,6 +30,7 @@ class UnicornUserActivateSerializer(serializers.ModelSerializer):
 
 class UnicornRegisterSerializer(serializers.Serializer):
     avatar = serializers.ImageField(required=False)
+    username = serializers.CharField(required=True)
     email = serializers.EmailField(required=allauth_settings.EMAIL_REQUIRED)
     bio = serializers.CharField(required=False, write_only=True)
     password1 = serializers.CharField(required=True, write_only=True)
@@ -42,6 +43,14 @@ class UnicornRegisterSerializer(serializers.Serializer):
                 raise serializers.ValidationError(
                     _("A user is already registered with this e-mail address."))
         return email
+
+    def validate_username(self, username):
+        try:
+            username = UnicornUser.objects.get(username=username)
+            raise serializers.ValidationError(
+                _("This username is already taken."))
+        except UnicornUser.DoesNotExist:
+            return username
 
     def validate_password1(self, password):
         return get_adapter().clean_password(password)

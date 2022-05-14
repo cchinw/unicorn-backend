@@ -20,7 +20,7 @@ class UnicornUser(AbstractUser):
         choices=USER_TYPE_CHOICES, null=True)
 
     def __str__(self):
-        return self.username
+        return self.email
 
 
 class GriefStage(models.Model):
@@ -35,33 +35,27 @@ class GriefStage(models.Model):
 
 
 class Resources(models.Model):
-    resource_title = models.CharField(
+    title = models.CharField(
         max_length=500, default='Grief Handling Resource')
-    grief_stage = models.ForeignKey(
-        GriefStage, on_delete=models.CASCADE, related_name='resource_grief_stage', blank=True, null=True)
     resource = models.TextField()
     image = models.ImageField(
         upload_to='uploads/resources', blank=True, null=True)
 
     def __str__(self):
-        return self.resource_title
+        return self.title
 
 
 class Community(models.Model):
-    category = models.CharField(max_length=500)
-    image = models.ImageField(blank=True, null=True)
+    name = models.CharField(max_length=500)
+    banner = models.ImageField(blank=True, null=True)
     description = models.TextField()
-    population = models.IntegerField(blank=True, null=True)
     members = models.ManyToManyField(
         settings.AUTH_USER_MODEL, related_name='members', blank=True)
     creator = models.ForeignKey(
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='creator', default=True)
-    grief_stage = models.ForeignKey(
-        GriefStage, on_delete=models.CASCADE, related_name='community_grief_stage', blank=True, null=True)
-    image = models.ImageField(null=True,)
 
     def __str__(self):
-        return self.category
+        return self.name
 
 
 class UserProfile(models.Model):
@@ -72,18 +66,15 @@ class UserProfile(models.Model):
         upload_to='uploads/avatar', blank=True, null=True)
     grief_stage = models.ForeignKey(
         GriefStage, on_delete=models.CASCADE, related_name='user_grief_stage', blank=True, null=True)
-    community = models.ForeignKey(
-        Community, on_delete=models.CASCADE, related_name='user_community', blank=True, null=True)
 
     def __str__(self):
-        return self.user
+        return self.user.username
 
 
 class Discussion(models.Model):
     topic = models.TextField(max_length=2000)
     content = models.TextField()
     upvotes = models.PositiveIntegerField()
-    comments = models.TextField()
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='user')
     creator = models.ForeignKey(
@@ -96,7 +87,7 @@ class Discussion(models.Model):
 
 
 class Comment(models.Model):
-    comment = models.TextField()
+    text = models.TextField()
     upvotes = models.PositiveIntegerField()
     discussion = models.ForeignKey(
         Discussion, on_delete=models.CASCADE, related_name='discussion')
@@ -104,7 +95,7 @@ class Comment(models.Model):
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='commenter')
 
     def __str__(self):
-        return self.topic
+        return self.text
 
 
 class DirectMessage(models.Model):
