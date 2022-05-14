@@ -25,6 +25,10 @@ from django.conf import settings
 from django.conf.urls.static import static
 from drf_yasg import openapi
 from drf_yasg.views import get_schema_view
+from rest_auth.views import PasswordResetConfirmView
+
+from unicorn.views import index, UserLoginView, UnicornSignUpView, \
+    VerifyEmailView, ChangePasswordView, ResendEmailConfirmation, DeactivateUserView, ActivateUserView
 
 schema_view = get_schema_view(
     openapi.Info(
@@ -39,10 +43,25 @@ urlpatterns = [
     path('unicorn/', include('unicorn.urls')),
     path('swagger-docs/', schema_view.with_ui('swagger',
          cache_timeout=0), name='schema-swagger-ui'),
-
-    # path('api-auth/', include('rest_framework.urls')),
-    # path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
-    # path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    # Registration and Authentication
+    path('rest-auth/password/reset/',
+         include('django_rest_passwordreset.urls', namespace='password_reset')),
+    path('rest-auth/password/reset/confirm/<str:uidb64>/', PasswordResetConfirmView,
+         name='password_reset_confirm'),
+    path('rest-auth/', include('rest_auth.urls')),
+    path('rest-auth/unicorn/registration/', UnicornSignUpView.as_view()),
+    path('rest-auth/accounts/login/',
+         UserLoginView.as_view(), name='custom-login'),
+    path('rest-auth/resend-confirmation-email/',
+         ResendEmailConfirmation.as_view(), name='resend-email-confirmation'),
+    path('rest-auth/deactivate-user/', DeactivateUserView.as_view()),
+    path('rest-auth/activate-user/', ActivateUserView.as_view()),
+    path('rest-auth/change-password/',
+         ChangePasswordView.as_view(), name='change-password'),
+    path('rest-auth/account-confirm-email/', VerifyEmailView.as_view(),
+         name='account_email_verification_sent'),
+    path('rest-auth/account-confirm-email/<str:key>/', VerifyEmailView.as_view(),
+         name='account_confirm_email'),
 ]
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -219,7 +219,19 @@ class UnicornSignUpView(RegisterView):
             user = self.perform_create(serializer)
             headers = self.get_success_headers(serializer.data)
             body = self.get_response_data(user)
-            token, created = Token.object
+            token, created = Token.objects.get_or_create(user=user.id)
+            body["token"] = token.key
+            body["email"] = user.email
+            body["id"] = user.id
+            response = Response(body,
+                                status=status.HTTP_201_CREATED,
+                                headers=headers)
+            return response
+
+        else:
+            response = Response(serializer.errors,
+                                status=status.HTTP_400_BAD_REQUEST)
+            return response
 
 
 class UserList(generics.ListCreateAPIView):
@@ -231,6 +243,10 @@ class UserDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = UnicornUser.objects.all()
     serializer_class = UserSerializer
 
+
+class UserUpdate(generics.RetrieveUpdateAPIView):
+    queryset = UnicornUser.objects.all()
+    serializer_class = UserSerializer
 # Grief Stage Views
 
 

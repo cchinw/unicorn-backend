@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import ResendEmailConfirmation, VerifyEmailView, UserLoginView, ChangePasswordSerializer, DeactivateUserView, ActivateUserView, UnicornSignUpView, UserList, UserDetail, CommunityCreate, CommunityList, CommunityUpdate, CommunityDetail, CommunityDelete, GriefStageUpdate, GriefStageList, GriefStageDetail, DiscussionCreate, DiscussionUpdate, DiscussionList, DiscussionDetail, DiscussionDelete, CommentCreate, CommentUpdate, CommentList, CommentDetail, CommentDelete, ResourceList, ResourceDetail, ResourceCreate, DirectMesageCreate, DirectMesageUpdate, DirectMesageList, DirectMesageDetail, DirectMesageDelete
+from .views import ResendEmailConfirmation, VerifyEmailView, UserLoginView, ChangePasswordSerializer, DeactivateUserView, ActivateUserView, UnicornSignUpView, UserList, UserDetail, UserUpdate, CommunityCreate, CommunityList, CommunityUpdate, CommunityDetail, CommunityDelete, GriefStageUpdate, GriefStageList, GriefStageDetail, DiscussionCreate, DiscussionUpdate, DiscussionList, DiscussionDetail, DiscussionDelete, CommentCreate, CommentUpdate, CommentList, CommentDetail, CommentDelete, ResourceList, ResourceDetail, ResourceCreate, DirectMesageCreate, DirectMesageUpdate, DirectMesageList, DirectMesageDetail, DirectMesageDelete
 
 
 urlpatterns = [
@@ -9,7 +9,10 @@ urlpatterns = [
     path('api/login/user', UserLoginView.as_view(), name='login-unicorn-user'),
     path('api/auth/session', UserLoginView.as_view(), name='check-session'),
     path('api/detail/unicorn-user/<pk>', UserDetail.as_view(), name='view-user'),
-
+    path('api/update/unicorn-user/<pk>',
+         UserUpdate.as_view(), name='update-user'),
+    path('api/list/users', UserList.as_view(),
+         name='list-unicorn-users'),
 
     # Grief Stage Endpoints
     path('api/list/grief-stages', GriefStageList.as_view(),
@@ -29,6 +32,8 @@ urlpatterns = [
          CommunityDetail.as_view(), name='get-community-by-grief-stage'),
     path('api/update/community/<pk>',
          CommunityUpdate.as_view(), name='update-community'),
+    path('api/update/community/<int:members>',
+         CommunityUpdate.as_view(), name='join-community'),
     path('api/detail/community/<pk>',
          CommunityDetail.as_view(), name='detail-community'),
     path('api/delete/community/<pk>',

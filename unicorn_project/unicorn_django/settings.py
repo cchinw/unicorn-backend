@@ -51,16 +51,40 @@ INSTALLED_APPS = [
     'unicorn',
 ]
 
-REST_FRAMEWORK = {
-    # Use Django's standard `django.contrib.auth` permissions,
-    # or allow read-only access for unauthenticated users.
-    # 'DEFAULT_PERMISSION_CLASSES': [
-    #     'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly',
-    'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework_simplejwt.authentication.JWTAuthentication',
-    )
-    # ]
+REST_AUTH_SERIALIZERS = {
+    'USER_DETAILS_SERIALIZER': 'unicorn.serializers.UserSerializer',
+    'LOGIN_SERIALIZER': 'unicorn.serializers.UnicornLoginSerializer',
 }
+
+# 'PASSWORD_RESET_SERIALIZER': 'unicorn.serializers.RAPasswordResetSerializer'
+
+REST_FRAMEWORK = {
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
+    'PAGE_SIZE': 100,
+    'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema',
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.SessionAuthentication',
+        # when commented stops API Docs From Working # when uncommented prevents rest api client
+        'rest_framework.authentication.TokenAuthentication',
+        # Makes Possible to use token expiration
+        # 'unicorn.authentication.ExpiringTokenAuthentication',
+    ),
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    )
+}
+
+
+# REST_FRAMEWORK = {
+#     # Use Django's standard `django.contrib.auth` permissions,
+#     # or allow read-only access for unauthenticated users.
+#     # 'DEFAULT_PERMISSION_CLASSES': [
+#     #     'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly',
+#     'DEFAULT_AUTHENTICATION_CLASSES': (
+#         'rest_framework_simplejwt.authentication.JWTAuthentication',
+#     )
+#     # ]
+# }
 
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
@@ -81,6 +105,25 @@ CSRF_COOKIE_NAME = "csrftoken"
 
 
 ROOT_URLCONF = 'unicorn_django.urls'
+
+AUTHENTICATION_BACKENDS = (
+    # default
+    'django.contrib.auth.backends.ModelBackend',
+    # email login
+    'allauth.account.auth_backends.AuthenticationBackend',
+)
+
+# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = os.environ.get('EMAIL_HOST')
+EMAIL_USE_TLS = True
+EMAIL_USE_SSL = False
+EMAIL_PORT = 587
+EMAIL_HOST_USER = os.environ.get("GMAIL_USER")
+EMAIL_HOST_PASSWORD = os.environ.get("GMAIL_PASS")
+EMAIL_TIMEOUT = 1000
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+
 
 TEMPLATES = [
     {
@@ -144,8 +187,17 @@ ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
 ACCOUNT_CONFIRM_EMAIL_ON_GET = True
 ACCOUNT_EMAIL_CONFIRMATION_ANONYMOUS_REDIRECT_URL = '/?verification=1'
 ACCOUNT_EMAIL_CONFIRMATION_AUTHENTICATED_REDIRECT_URL = '/?verification=1'
-ACCOUNT_ADAPTER = 'accounts.adapter.DefaultAccountAdapterCustom'
+ACCOUNT_ADAPTER = 'unicorn.adapter.DefaultAccountAdapterCustom'
 URL_FRONT = os.environ.get("FRONT_END_ONE")
+
+SITE_ID = 1
+
+AUTHENTICATION_BACKENDS = (
+    # default
+    'django.contrib.auth.backends.ModelBackend',
+    # email login
+    'allauth.account.auth_backends.AuthenticationBackend',
+)
 
 # SIMPLE_JWT = {
 #     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=60),

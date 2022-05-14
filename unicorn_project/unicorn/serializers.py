@@ -97,6 +97,9 @@ class GriefStageSerializer(serializers.ModelSerializer):
         model = GriefStage
         fields = '__all__'
 
+    def sortbydesc(self, fields):
+        fields.sort(reverse=True)
+
 
 class UserProfileSerializer(serializers.ModelSerializer):
     """
