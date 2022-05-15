@@ -340,7 +340,16 @@ class CommentUpdate(generics.RetrieveUpdateAPIView):
 
 class CommentList(generics.ListAPIView):
     queryset = Comment.objects.all()
+    lookup_field = 'discussion'
     serializer_class = CommentSerializer
+
+    def get_queryset(self, **kwargs):
+        try:
+            discussion = kwargs['discussion']
+            communities = Discussion.objects.filter(discussion=discussion)
+            return communities
+        except Comment.DoesNotExist():
+            return {}
 
 
 class CommentDetail(generics.RetrieveAPIView):

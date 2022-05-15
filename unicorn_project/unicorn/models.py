@@ -14,6 +14,8 @@ class UnicornUser(AbstractUser):
         (1, 'UnicornAdmin'),
         (2, 'Griever'),
     )
+    USERNAME_FIELD = 'email'
+    REQUIRED_FIELDS = []
     username = models.CharField(max_length=30, unique=True)
     email = models.EmailField(unique=True)
     user_type = models.PositiveSmallIntegerField(
