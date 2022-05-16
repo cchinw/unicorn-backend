@@ -28,8 +28,7 @@ class UnicornUserAdmin(UserAdmin):
         (None, {'fields': ('email', 'password')}),
         ('Profile', {'fields': ('username', 'user_type', 'email_verified')}),
         ('Activity History', {'fields': ('date_joined', 'last_login')}),
-        ('Permissions', {'fields': ('is_staff',
-         'is_active', 'is_superuser', 'groups')}),
+        ('Permissions', {'fields': ('is_staff', 'is_active', 'is_superuser', 'groups')}),
     )
     add_fieldsets = (
         (None, {

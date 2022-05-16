@@ -10,20 +10,20 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.0/ref/settings/
 """
 
-import dj_database_url
-import environ  # for Heroku.
 import os
 from pathlib import Path
 
 import django_heroku
 import datetime
 django_heroku.settings(locals(), staticfiles=False)
+import environ  # for Heroku.
 
 env = environ.Env(
     # set casting, default value
     DEBUG=(bool, False)
 )
 
+import dj_database_url
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -145,7 +145,8 @@ DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates')],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')]
+        ,
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -232,3 +233,4 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 
 USE_TZ = True
+
