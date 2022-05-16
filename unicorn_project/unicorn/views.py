@@ -122,9 +122,9 @@ class UserLoginView(LoginView):
 
     def get_response(self):
         response = super().get_response()
-        data = {"message": "Welcome back, {} {}".format(self.user.first_name, self.user.last_name, ),
+        data = {"message": "Welcome back, {} {}".format(self.user.username),
                 "code": response.status_code,
-                "user_type": self.user.user_type, "user_id": self.user.id}
+                "user_type": self.user.email, "user_id": self.user.id}
         response.data.update(data)
 
         return response

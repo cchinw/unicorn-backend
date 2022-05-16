@@ -16,10 +16,15 @@ class UnicornUser(AbstractUser):
     )
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
-    username = models.CharField(max_length=30, unique=True)
     email = models.EmailField(unique=True)
+    username = models.CharField(max_length=23)
     user_type = models.PositiveSmallIntegerField(
         choices=USER_TYPE_CHOICES, null=True)
+    is_active: models.BooleanField(default=True)
+    is_superuser: models.BooleanField(default=False)
+    is_staff: models.BooleanField(default=False)
+    email_verified: models.BooleanField(default=False)
+    identity_verified: models.BooleanField(default=False)
 
     def __str__(self):
         return self.email

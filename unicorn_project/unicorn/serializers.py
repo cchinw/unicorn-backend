@@ -13,7 +13,16 @@ from rest_auth.serializers import LoginSerializer
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = UnicornUser
-        fields = '__all__'
+        fields = ['email', 'password']
+        extra_kwargs = {'password': {'write_only': True}}
+
+        def create(self, validated_data):
+            user = UnicornUser(
+                email=validated_data['email']
+            )
+            user.set_password(validated_data['password'])
+            user.save()
+            return user
 
 
 class UnicornUserDeactivateSerializer(serializers.ModelSerializer):
@@ -83,8 +92,7 @@ class UnicornRegisterSerializer(serializers.Serializer):
 
 
 class UnicornLoginSerializer(LoginSerializer):
-    model = UnicornUser
-    username = ['username']
+    username = None
 
 
 class ChangePasswordSerializer(serializers.Serializer):
