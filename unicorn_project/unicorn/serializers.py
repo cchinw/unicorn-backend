@@ -74,6 +74,10 @@ class UnicornRegisterSerializer(serializers.Serializer):
         return {
             'username': self.validated_data.get('username', ''),
             'email': self.validated_data.get('email', ''),
+            'avatar': self.validated_data.get('avatar', ''),
+            'password1': self.validated_data.get('password1', ''),
+            'password2': self.validated_data.get('password2', ''),
+            'bio': self.validated_data.get('bio', ''),
         }
 
     def save(self, request):
@@ -82,7 +86,6 @@ class UnicornRegisterSerializer(serializers.Serializer):
         self.cleaned_data = self.get_cleaned_data()
         adapter.save_user(request, user, self)
         setup_user_email(request, user, [])
-
         profile = UserProfile.objects.create(user=user)
         profile.avatar = self.cleaned_data.get('avatar')
         profile.user.user_type = 2
