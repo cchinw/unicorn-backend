@@ -212,7 +212,7 @@ class UnicornSignUpView(RegisterView):
 
     def create(self, request, *args, **kwargs):
         data = {
-            # 'username': request.data.get('username', None),
+            'username': request.data.get('username', None),
             'email': request.data.get('email', None),
             'password1': request.data.get('password1', None),
             'password2': request.data.get('password2', None),
