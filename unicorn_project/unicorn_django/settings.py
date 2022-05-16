@@ -140,7 +140,7 @@ EMAIL_HOST_USER = os.environ.get("GMAIL_USER")
 EMAIL_HOST_PASSWORD = os.environ.get("GMAIL_PASS")
 EMAIL_TIMEOUT = 1000
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
-# print(EMAIL_HOST, 'EMAIL HOST!!!!!!!!!!!!!!!!!!!!')
+print(EMAIL_HOST, 'EMAIL HOST!!!!!!!!!!!!!!!!!!!!')
 
 TEMPLATES = [
     {
