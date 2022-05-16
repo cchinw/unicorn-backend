@@ -89,7 +89,9 @@ class UnicornRegisterSerializer(serializers.Serializer):
         profile = UserProfile.objects.create(user=user)
         profile.avatar = self.cleaned_data.get('avatar')
         profile.user.user_type = 2
+        profile.bio = self.cleaned_data.get("bio")
         profile.save()
+        user.username = self.cleaned_data.get("username")
         user.save()
         return user
 

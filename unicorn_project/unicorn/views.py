@@ -126,8 +126,10 @@ class VerifyEmailView(APIView):
 class UserLoginView(LoginView):
 
     def get_response(self):
+
         response = super().get_response()
         data = {"message": "Welcome back, {}".format(self.user.username),
+                "username": self.user.username,
                 "code": response.status_code,
                 "user_type": self.user.email, "user_id": self.user.id}
         response.data.update(data)
