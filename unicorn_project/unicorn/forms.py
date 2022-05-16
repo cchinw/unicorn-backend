@@ -1,10 +1,15 @@
-from django import forms
+from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 
-from .models import User
+from .models import UnicornUser
 
 
-class LoginForm(forms.ModelForm):
-    password = forms.CharField(widget=forms.PasswordInput)
+class UnicornUserCreationForm(UserCreationForm):
+    class Meta(UserCreationForm):
+        model = UnicornUser
+        fields = ('email',)
 
+
+class UnicornUserChangeForm(UserChangeForm):
     class Meta:
-        model = User
+        model = UnicornUser
+        fields = ('email',)

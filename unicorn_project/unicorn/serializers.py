@@ -1,7 +1,7 @@
 from pyexpat import model
 from rest_framework import serializers
 from rest_auth.serializers import LoginSerializer
-from .models import UnicornUser, Community, Comment, Discussion, GriefStage, DirectMessage, Resources, UserProfile
+from .models import UnicornUser, Community, Comment, Discussion, GriefStage, DirectMessage, Resource, UserProfile
 from django.utils.translation import gettext as _
 from allauth.account import app_settings as allauth_settings
 from allauth.account.adapter import get_adapter
@@ -158,5 +158,5 @@ class DirectMessageSerializer(serializers.ModelSerializer):
 
 class ResourceSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Resources
+        model = Resource
         fields = '__all__'

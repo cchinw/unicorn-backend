@@ -16,10 +16,6 @@ Including another URLconf
 from ast import Index
 from django.contrib import admin
 from django.urls import path, include
-from rest_framework_simplejwt.views import (
-    TokenObtainPairView,
-    TokenRefreshView,
-)
 from unicorn.views import index
 from django.conf import settings
 from django.conf.urls.static import static
@@ -50,7 +46,7 @@ urlpatterns = [
          name='password_reset_confirm'),
     path('rest-auth/', include('rest_auth.urls')),
     path('rest-auth/unicorn/registration/', UnicornSignUpView.as_view()),
-    path('rest-auth/accounts/login/',
+    path('rest-auth/unicorn/login/',
          UserLoginView.as_view(), name='custom-login'),
     path('rest-auth/resend-confirmation-email/',
          ResendEmailConfirmation.as_view(), name='resend-email-confirmation'),

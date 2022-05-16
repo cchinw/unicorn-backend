@@ -27,14 +27,17 @@ from rest_framework.generics import (
     CreateAPIView,
     RetrieveUpdateAPIView, UpdateAPIView, get_object_or_404)
 
-
 # Create your views here.
-from .serializers import UserSerializer, UserProfileSerializer, ResendEmailSerializer, ChangePasswordSerializer, UnicornLoginSerializer, UnicornUserActivateSerializer, UnicornUserDeactivateSerializer, UnicornRegisterSerializer, GriefStageSerializer, CommunitySerializer, DiscussionSerializer, CommentSerializer, DirectMessageSerializer, ResourceSerializer
-from .models import UnicornUser, UserProfile, Community, Comment, Discussion, GriefStage, DirectMessage, Resources
+from .serializers import UserSerializer, UserProfileSerializer, ResendEmailSerializer, ChangePasswordSerializer, \
+    UnicornLoginSerializer, UnicornUserActivateSerializer, UnicornUserDeactivateSerializer, UnicornRegisterSerializer, \
+    GriefStageSerializer, CommunitySerializer, DiscussionSerializer, CommentSerializer, DirectMessageSerializer, \
+    ResourceSerializer
+from .models import UnicornUser, UserProfile, Community, Comment, Discussion, GriefStage, DirectMessage, Resource
 
 
 def index(request):
     return HttpResponse("Welcome to Unicorn API Page")
+
 
 # User Views
 
@@ -53,6 +56,7 @@ def email_confirmed_(request, email_address, **kwargs):
     user.email_verified = True
 
     user.save()
+
 
 # request a new confirmation email
 
@@ -73,7 +77,8 @@ class ResendEmailConfirmation(APIView):
                 user=user, verified=True).exists()
 
             if emailAddress:
-                return Response({'message': 'This email has already been  verified'}, status=status.HTTP_400_BAD_REQUEST)
+                return Response({'message': 'This email has already been  verified'},
+                                status=status.HTTP_400_BAD_REQUEST)
             else:
                 send_email_confirmation(request, user=user)
                 return Response({'message': 'Verification email resent'}, status=status.HTTP_201_CREATED)
@@ -122,7 +127,7 @@ class UserLoginView(LoginView):
 
     def get_response(self):
         response = super().get_response()
-        data = {"message": "Welcome back, {} {}".format(self.user.username),
+        data = {"message": "Welcome back, {}".format(self.user.username),
                 "code": response.status_code,
                 "user_type": self.user.email, "user_id": self.user.id}
         response.data.update(data)
@@ -157,6 +162,7 @@ class ChangePasswordView(UpdateAPIView):
             response = {
                 'status': 'success',
             }
+
 
 # Deactivate User Account
 
@@ -206,7 +212,7 @@ class UnicornSignUpView(RegisterView):
 
     def create(self, request, *args, **kwargs):
         data = {
-            'username': request.data.get('username', None),
+            # 'username': request.data.get('username', None),
             'email': request.data.get('email', None),
             'password1': request.data.get('password1', None),
             'password2': request.data.get('password2', None),
@@ -247,6 +253,8 @@ class UserDetail(generics.RetrieveUpdateDestroyAPIView):
 class UserUpdate(generics.RetrieveUpdateAPIView):
     queryset = UnicornUser.objects.all()
     serializer_class = UserSerializer
+
+
 # Grief Stage Views
 
 
@@ -303,6 +311,11 @@ class DiscussionUpdate(generics.RetrieveUpdateAPIView):
 
 
 class DiscussionList(generics.ListAPIView):
+    queryset = Discussion.objects.all()
+    serializer_class = DiscussionSerializer
+
+
+class DiscussionCommunityList(generics.ListAPIView):
     queryset = Discussion.objects.all()
     lookup_field = 'community'
     serializer_class = DiscussionSerializer
@@ -364,17 +377,17 @@ class CommentDelete(generics.DestroyAPIView):
 
 # Resource Views
 class ResourceCreate(generics.CreateAPIView):
-    queryset = Resources.objects.all()
+    queryset = Resource.objects.all()
     serializer_class = ResourceSerializer
 
 
 class ResourceList(generics.ListAPIView):
-    queryset = Resources.objects.all()
+    queryset = Resource.objects.all()
     serializer_class = ResourceSerializer
 
 
 class ResourceDetail(generics.RetrieveAPIView):
-    queryset = Resources.objects.all()
+    queryset = Resource.objects.all()
     serializer_class = ResourceSerializer
 
 

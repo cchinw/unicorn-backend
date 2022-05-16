@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import ResendEmailConfirmation, VerifyEmailView, UserLoginView, ChangePasswordSerializer, DeactivateUserView, ActivateUserView, UnicornSignUpView, UserList, UserDetail, UserUpdate, CommunityCreate, CommunityList, CommunityUpdate, CommunityDetail, CommunityDelete, GriefStageUpdate, GriefStageList, GriefStageDetail, DiscussionCreate, DiscussionUpdate, DiscussionList, DiscussionDetail, DiscussionDelete, CommentCreate, CommentUpdate, CommentList, CommentDetail, CommentDelete, ResourceList, ResourceDetail, ResourceCreate, DirectMesageCreate, DirectMesageUpdate, DirectMesageList, DirectMesageDetail, DirectMesageDelete
+from .views import ResendEmailConfirmation, VerifyEmailView, UserLoginView, ChangePasswordSerializer, DeactivateUserView, ActivateUserView, UnicornSignUpView, UserList, UserDetail, UserUpdate, CommunityCreate, CommunityList, CommunityUpdate, CommunityDetail, CommunityDelete, GriefStageUpdate, GriefStageList, GriefStageDetail, DiscussionCreate, DiscussionUpdate, DiscussionList, DiscussionDetail, DiscussionDelete, CommentCreate, CommentUpdate, CommentList, CommentDetail, CommentDelete, ResourceList, ResourceDetail, ResourceCreate, DirectMesageCreate, DirectMesageUpdate, DirectMesageList, DirectMesageDetail, DirectMesageDelete, DiscussionCommunityList
 
 
 urlpatterns = [
@@ -32,8 +32,10 @@ urlpatterns = [
     # Discussion Endpoints
     path('api/create/discussion', DiscussionCreate.as_view(),
          name='create-discussion'),
-    path('api/list/discussions/<int:community>',
+    path('api/list/all-discussions/',
          DiscussionList.as_view(), name='list-discussions-by-community'),
+    path('api/list/community-discussions/<int:community>',
+         DiscussionCommunityList.as_view(), name='list-discussions-by-community'),
     path('api/update/discussion/<pk>', DiscussionUpdate.as_view(),
          name='update-discussion'),
     path('api/detail/discussion/<pk>', DiscussionDetail.as_view(),
@@ -49,7 +51,7 @@ urlpatterns = [
     path('api/detail/comment/<pk>', CommentDetail.as_view(), name='detail-comment'),
     path('api/delete/comment/<pk>', CommentDelete.as_view(), name='delete-comment'),
 
-    # Resources Endpoints
+    # Resource Endpoints
     path('api/create/resource', ResourceCreate.as_view(), name='create-resource'),
     path('api/list/resources', ResourceList.as_view(), name='list-resources'),
     path('api/detail/resource/<pk>',

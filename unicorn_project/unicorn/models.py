@@ -7,6 +7,7 @@ from django.contrib.auth.models import AbstractUser
 from django.conf import settings
 
 # Create your models here.
+from .managers import UnicornUserManager
 
 
 class UnicornUser(AbstractUser):
@@ -14,17 +15,17 @@ class UnicornUser(AbstractUser):
         (1, 'UnicornAdmin'),
         (2, 'Griever'),
     )
+    username = models.CharField(max_length=20, blank=True, null=True)
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
+    objects = UnicornUserManager()
     email = models.EmailField(unique=True)
-    username = models.CharField(max_length=23)
     user_type = models.PositiveSmallIntegerField(
         choices=USER_TYPE_CHOICES, null=True)
     is_active: models.BooleanField(default=True)
     is_superuser: models.BooleanField(default=False)
     is_staff: models.BooleanField(default=False)
     email_verified: models.BooleanField(default=False)
-    identity_verified: models.BooleanField(default=False)
 
     def __str__(self):
         return self.email
@@ -41,10 +42,10 @@ class GriefStage(models.Model):
         return self.title
 
 
-class Resources(models.Model):
+class Resource(models.Model):
     title = models.CharField(
         max_length=500, default='Grief Handling Resource')
-    resource = models.TextField()
+    text = models.TextField()
     image = models.ImageField(
         upload_to='uploads/resources', blank=True, null=True)
 
@@ -75,7 +76,7 @@ class UserProfile(models.Model):
         GriefStage, on_delete=models.CASCADE, related_name='user_grief_stage', blank=True, null=True)
 
     def __str__(self):
-        return self.user.username
+        return self.user.email
 
 
 class Discussion(models.Model):
@@ -95,7 +96,7 @@ class Discussion(models.Model):
 
 class Comment(models.Model):
     text = models.TextField()
-    upvotes = models.PositiveIntegerField()
+    upvote = models.PositiveIntegerField()
     discussion = models.ForeignKey(
         Discussion, on_delete=models.CASCADE, related_name='discussion')
     commenter = models.ForeignKey(
